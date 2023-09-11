@@ -1,11 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useRef } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
+import PagerView from "react-native-pager-view";
+import PageImage from "./src/screens/PageImage";
+import PageHome from "./src/screens/PageHome";
 
 export default function App() {
+  const pagerRef = useRef(null);
+
+  const goToPage = (pageNumber) => {
+    pagerRef.current.setPage(pageNumber);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={{ flex: 1 }}>
+      <StatusBar />
+      <PagerView
+        style={styles.viewPager}
+        initialPage={0}
+        scrollEnabled={true}
+        orientation="vertical"
+        ref={pagerRef}
+      >
+        <PageHome key={"1"} onPressed={() => goToPage(1)} />
+        <PageImage backPagePress={() => goToPage(0)} key="2" />
+      </PagerView>
     </View>
   );
 }
@@ -13,8 +37,16 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  viewPager: {
+    flex: 1,
+  },
+  page: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
   },
 });
